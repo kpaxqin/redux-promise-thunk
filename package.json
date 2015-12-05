@@ -1,0 +1,35 @@
+{
+  "name": "redux-promise-thunk",
+  "version": "0.1.0",
+  "description": "Thunk generator to dispatch Flux-Standard-Action in each phase of promise",
+  "main": "lib/index.js",
+  "keywords": [
+    "redux",
+    "promise",
+    "thunk",
+    "FSA"
+  ],
+  "scripts": {
+    "build": "babel src/ --out-dir lib/",
+    "test": "mocha --compilers js:babel/register --reporter spec test/*.js",
+    "pre-publish": "babel src --out-dir lib",
+    "lint": "eslint src/"
+  },
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "redux-thunk": "*"
+  },
+  "devDependencies": {
+    "babel": "^5.8.34",
+    "babel-core": "^5.8.34",
+    "babel-eslint": "^3.1.30",
+    "babel-runtime": "^5.8.34",
+    "chai": "^3.4.1",
+    "eslint": "^1.9.0",
+    "eslint-config-airbnb": "^1.0.0",
+    "eslint-plugin-react": "^3.7.1",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2"
+  }
+}
