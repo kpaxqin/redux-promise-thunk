@@ -4,15 +4,15 @@ This lib can help you dispatch FSA(flux standard action) in each phase of your p
 
 You need to use `redux-thunk` as one of your middleware to make this lib work. async
 
-##createPromiseThunk(actionName, promiseCreator [, metaCreator])
+###createPromiseThunk(actionName, promiseCreator [, metaCreator])
 
-createPromiseThunk will return a `high-order function` like `data=>dispatch=>{}`, 
-you can pass data to it just like other action creators, but instead of action object, it returns a thunk function, which will be processed by `redux-thunk`.
+createPromiseThunk will return a `high-order function` like `data=>dispatch=>{}`:
+You can pass data to it just like other action creators, but instead of action object, it returns a thunk function, which will be processed by `redux-thunk`.
 
 promiseCreator(data) accept the data you passed into our 'action creator', and must return a Promise(or thenable) object. 
 Our thunk function will dispatch following actions for that promise:
 
-### START action
+#### START action
 Dispatch before promiseCreator been called, payload will be the first argument of promiseCreator;
 ```js
   {
@@ -23,7 +23,7 @@ Dispatch before promiseCreator been called, payload will be the first argument o
     }
   }
 ```
-### COMPLETED action
+#### COMPLETED action
 Dispatch when promise fulfilled, payload will be the value which fulfilled this promise.
 ```js
   {
@@ -34,7 +34,7 @@ Dispatch when promise fulfilled, payload will be the value which fulfilled this 
     }
   }
 ```
-###
+####
 FAILED action
 Dispatch when promise rejected, payload will be the error object which reject this promise.
 ```js
