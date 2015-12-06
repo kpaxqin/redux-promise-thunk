@@ -4,6 +4,11 @@ This lib can help you dispatch FSA(flux standard action) in each phase of your p
 
 You need to use `redux-thunk` as one of your middleware to make this lib work. async
 
+## Install
+`npm i redux-promise-thunk`
+
+## Usage
+
 ###createPromiseThunk(actionName, promiseCreator [, metaCreator])
 
 createPromiseThunk will return a `high-order function` like `data=>dispatch=>{}`:
