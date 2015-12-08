@@ -24,7 +24,7 @@ The thunk function will dispatch following flux standard actions(FSA) for that p
 | `${actionName}_FAILED` | promise rejected | reason of promise | 'FAILED' |
 
 
-#### Example
+## Example
 ```js
 //actions.js
 const editTodo = createPromiseThunk('EDIT_TODO', function(todo) {
@@ -38,4 +38,6 @@ handleEdit(todo){
   editTodo(todo);
 }
 ```
+
+Check `./examples/todo-mvc` for further info.
 
