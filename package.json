@@ -1,6 +1,6 @@
 {
   "name": "redux-promise-thunk",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Thunk generator to dispatch Flux-Standard-Action in each phase of promise",
   "main": "lib/index.js",
   "repository": {
