@@ -26,17 +26,17 @@ function getTypeByStep(type) {
   return step => `${type}_${step}`;
 }
 
-function getMetaByStep(meta) {
-  return step => Object.assign({
-    asyncStep: step
-  }, meta);
+function getMetaByStep(baseMeta) {
+  return step => ({
+    asyncStep: step,
+    ...baseMeta
+  });
 }
 
 function createPromiseThunk(type, promiseCreator, metaCreator) {
-  const meta = isFunction(metaCreator) ? metaCreator() : metaCreator;
 
   const getType = getTypeByStep(type);
-  const getMeta = getMetaByStep(meta);
+  const getMeta = isFunction(metaCreator) ? metaCreator : getMetaByStep(metaCreator);
 
   function createActionForStep(step, payload) {
     return createAction(getType(step), payload, getMeta(step));
