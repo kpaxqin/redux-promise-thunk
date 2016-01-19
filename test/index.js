@@ -12,6 +12,16 @@ describe('redux promise thunk: ', function() {
       thunk(dispatch);
     }
 
+    function createAsyncPromise(result) {
+      return new Promise(function(resolver, reject) {
+        setTimeout(function() {
+          const fn = (result instanceof Error) ? reject: resolver;
+
+          fn(result);
+        });
+      });
+    }
+
     beforeEach(function() {
       actionHandler = createPromiseThunk(actionName, function(data) {
         return Promise.resolve(data);
@@ -66,40 +76,89 @@ describe('redux promise thunk: ', function() {
         assert.strictEqual(action.payload, data);
         assert.strictEqual(action.meta.asyncStep, steps.START);
       });
+
+      it('should call metaCreator with step.START', function() {
+        const metaCreator = sinon.spy();
+        actionHandler = createPromiseThunk(actionName, data=> Promise.resolve(data), metaCreator);
+
+        invokeThunk(actionHandler(1));
+
+        assert(metaCreator.calledWith(steps.START));
+      });
     });
 
     context('when promise resolved', function() {
-      it('should dispatch completed action', function() {
+      it('should dispatch completed action', function(done) {
         actionHandler = createPromiseThunk(actionName, function(data) {
           const result = data + 1;
-          return new Promise(function(resolve, reject) {
-            resolve(result);
 
-            const action = dispatch.args[1][0];
-
-            assert.strictEqual(action.type, `${actionName}_${steps.COMPLETED}`);
-            assert.strictEqual(action.payload, result);
-            assert.strictEqual(action.meta.asyncStep, steps.COMPLETED);
-          });
+          return createAsyncPromise(result);
         });
+
+        dispatch = sinon.spy(function(action) {
+          //after start action dispatched
+          if (dispatch.callCount === 2) {
+            assert.strictEqual(action.type, `${actionName}_${steps.COMPLETED}`);
+            assert.strictEqual(action.payload, 2);
+            assert.strictEqual(action.meta.asyncStep, steps.COMPLETED);
+
+            done();
+          }
+        });
+
+        invokeThunk(actionHandler(1));
+      });
+
+      it('should call metaCreator with step.COMPLETED', function(done) {
+        const metaCreator = sinon.spy(function(step) {
+          if (metaCreator.callCount === 2) {
+            assert(step === steps.COMPLETED);
+            done();
+          }
+        });
+
+        actionHandler = createPromiseThunk(actionName, function(data) {
+          return createAsyncPromise(data);
+        }, metaCreator);
+
         invokeThunk(actionHandler(1));
       });
     });
 
     context('when promise reject', function() {
-      it('should dispatch failed action', function() {
-        actionHandler = createPromiseThunk(actionName, function(data) {
-          return new Promise(function(resolve, reject) {
-            reject(new Error());
+      it('should dispatch failed action', function(done) {
+        const error = new Error();
+        actionHandler = createPromiseThunk(actionName, function() {
+          return createAsyncPromise(error);
+        });
 
-            const action = dispatch.args[1][0];
-
+        dispatch = sinon.spy(function(action) {
+          //after start action dispatched
+          if (dispatch.callCount === 2) {
             assert.strictEqual(action.type, `${actionName}_${steps.FAILED}`);
             assert(action.payload instanceof Error);
             assert(action.error);
             assert.strictEqual(action.meta.asyncStep, steps.FAILED);
-          });
+
+            done();
+          }
         });
+
+        invokeThunk(actionHandler(1));
+      });
+
+      it('should call metaCreator with step.FAILED', function(done) {
+        const metaCreator = sinon.spy(function(step) {
+          if (metaCreator.callCount === 2) {
+            assert(step === steps.FAILED);
+            done();
+          }
+        });
+
+        actionHandler = createPromiseThunk(actionName, function(data) {
+          return createAsyncPromise(new Error());
+        }, metaCreator);
+
         invokeThunk(actionHandler(1));
       });
     })
