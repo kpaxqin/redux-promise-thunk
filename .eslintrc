@@ -8,6 +8,13 @@
   "globals": {
     "expect": true
   },
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "destructuring": true,
+    "defaultParams": true,
+    "templateStrings": true,
+    "experimentalObjectRestSpread": true
+  },
   "rules": {
     "padded-blocks": 0,
     "comma-dangle": 0,
