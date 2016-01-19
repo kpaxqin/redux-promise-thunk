@@ -50,7 +50,7 @@ function createPromiseThunk(type, promiseCreator, metaCreator) {
     if (promise && promise.then) {
       promise.then((result)=>{
         dispatch(createActionForStep(steps.COMPLETED, result));
-      }).catch((err)=>{
+      }, (err)=>{
         dispatch(createActionForStep(steps.FAILED, err));
       });
     } else {
