@@ -4,26 +4,6 @@ const steps = {
   FAILED: 'FAILED'
 };
 
-const isFunction = target => typeof target === 'function';
-
-function createAction(type, payload, meta) {
-  const action = {
-    type,
-    payload,
-    meta
-  };
-
-  if (payload instanceof Error) {
-    action.error = true;
-  }
-
-  return action;
-}
-
-const getTypeByStep = type => step => `${type}_${step}`;
-
-const getMetaByStep = meta => step => ({asyncStep: step, ...meta});
-
 function createPromiseThunk(type, promiseCreator, metaCreator) {
 
   const getType = getTypeByStep(type);
@@ -49,6 +29,27 @@ function createPromiseThunk(type, promiseCreator, metaCreator) {
     }
   };
 }
+
+const isFunction = target => typeof target === 'function';
+
+const getTypeByStep = type => step => `${type}_${step}`;
+
+const getMetaByStep = meta => step => ({asyncStep: step, ...meta});
+
+function createAction(type, payload, meta) {
+  const action = {
+    type,
+    payload,
+    meta
+  };
+
+  if (payload instanceof Error) {
+    action.error = true;
+  }
+
+  return action;
+}
+
 
 export default {
   createPromiseThunk,
