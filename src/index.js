@@ -4,9 +4,7 @@ const steps = {
   FAILED: 'FAILED'
 };
 
-function isFunction(target) {
-  return typeof target === 'function';
-}
+const isFunction = target => typeof target === 'function';
 
 function createAction(type, payload, meta) {
   const action = {
@@ -22,16 +20,9 @@ function createAction(type, payload, meta) {
   return action;
 }
 
-function getTypeByStep(type) {
-  return step => `${type}_${step}`;
-}
+const getTypeByStep = type => step => `${type}_${step}`;
 
-function getMetaByStep(baseMeta) {
-  return step => ({
-    asyncStep: step,
-    ...baseMeta
-  });
-}
+const getMetaByStep = meta => step => ({asyncStep: step, ...meta});
 
 function createPromiseThunk(type, promiseCreator, metaCreator) {
 
