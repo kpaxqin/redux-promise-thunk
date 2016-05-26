@@ -30,6 +30,8 @@ function createPromiseThunk(type, promiseCreator, metaCreator) {
   };
 }
 
+const setupSteps = customSteps => ({steps, ...customSteps});
+
 const isFunction = target => typeof target === 'function';
 
 const getTypeByStep = type => step => `${type}_${step}`;
@@ -53,5 +55,6 @@ function createAction(type, payload, meta) {
 
 export default {
   createPromiseThunk,
+  setupSteps,
   steps
 };
