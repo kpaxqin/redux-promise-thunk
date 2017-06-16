@@ -1,5 +1,7 @@
 # redux-promise-thunk
 
+**This lib is out of date, please checkout [redux-action-tools](https://github.com/kpaxqin/redux-action-tools) for more handy tools. **
+
 This lib can help you dispatch FSA(flux standard action) in each phase of your promise;
 
 You need to use [redux thunk](http://npmjs.com/package/redux-thunk) as one of your middleware to make this lib work.
